@@ -47,7 +47,8 @@ $t\in[0,1]$; $x\in[0,1]$; $y\in[0,1]$
 In this example, we consider a unit square plate with a horizontal crack from the midpoint of the left outer edge to the center of the plate.
 The geometric setup and boundary conditions of the problem are shown in Fig. 1.
 
-![image.png](attachment:image.png)
+![image](https://github.com/QinghuiXiao/PF_PINN/assets/138593048/4f94e13a-3d36-449b-bbfc-3475cd2873c4)
+
 $$Fig. 1. Single-edge~notch~tension~example.$$
 
 The plate bottom is fixed, the plate top is fixed in the horizontal direction and prescribed an upward displacement in the vertical direction. There does not exist body force or traction force. The Young’s modulus is $E=210GPa$, the Poisson’s ratio is $μ=0.3$, the critical energy release rate is $g=0.0027 KN/mm$, and the length parameter is $l=0.01mm$, which are all taken from [1]. 
