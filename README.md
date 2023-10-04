@@ -41,7 +41,7 @@ $$\begin{cases}
 ((\frac{2}{1-μ})u_{2,22} + u_{2,11} + (\frac{1+μ}{1-μ})u_{1,12})(1-c)^2-4(1-c)[\frac{μ}{1-μ}(u_{1,1}+u_{2,2})+u_{2,2}]c_{,2}-2(1-c)(u_{1,2}+u_{2,1})c_{,1}= 0
 \end{cases}$$
 
-$t\in[0,1]$; $x\in[0,1]$; $y\in[0,1]$ 
+$t\in[0,1]$; $x_{1}\in[0,1]$; $x_{2}\in[0,1]$ 
 
 To prevent cracks from healing:
 
@@ -73,7 +73,7 @@ $u_{1,1}(t,0,x_{2})= u_{1,1}(t,1,x_{2})=0$
 
 The initial conditions are:
 
-The point at the crack: $c(0,x_{1}∈[0,0.5],0.5)=1$,Remove the points at the crack:$c(0,x_{1}∈[0,1],x_{2}(x_{2}\neq0.5))=0$.
+The point at the crack: $c(0,x_{1}\in[0,0.5],x_{1}=0.5)=1$,Remove the points at the crack:$c(0,x_{1}\in[0,1],x_{2}(x_{2}\neq0.5))=0$.
 
   
 [1]Li Z, Shen Y, Han F, et al. A phase field method for plane-stress fracture problems with tension-compression asymmetry[J]. Engineering Fracture Mechanics, 2021, 257: 107995.
