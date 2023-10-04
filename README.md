@@ -73,7 +73,9 @@ $u_{1,1}(t,0,x_{2})= u_{1,1}(t,1,x_{2})=0$
 
 The initial conditions are:
 
-The point at the crack: $c(0,x_{1}\in[0,0.5],x_{1}=0.5)=1$,Remove the points at the crack:$c(0,x_{1}\in[0,1],x_{2}(x_{2}\neq0.5))=0$.
+The point at the crack: $c(0,x_{1}\in[0,0.5],x_{2}=0.5)=1$
+
+Remove the points at the crack: $c(0,x_{1}\in[0,1],x_{2}(x_{2}\neq0.5))=0$
 
   
 [1]Li Z, Shen Y, Han F, et al. A phase field method for plane-stress fracture problems with tension-compression asymmetry[J]. Engineering Fracture Mechanics, 2021, 257: 107995.
