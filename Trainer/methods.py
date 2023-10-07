@@ -22,8 +22,7 @@ def DPINN(args):
     networks = []
     time_intervals = []
     u_previous = torch.zeros(args.n_tb, 3)
-    u_previous[420:471, 2] = 1
-    print(u_previous)
+    u_previous[2550:2601, 2] = 1 #裂纹上取的点c=1
 
     for i in range(0, args.nt):
         time_domain = torch.tensor([i * args.delta_t, (i+1) * args.delta_t])  # t dimension

@@ -9,7 +9,7 @@ class Plot2D():
         x, y=nodecoords[:, 1],nodecoords[:, 2]
         xmin, xmax = np.min(x), np.max(x)
         ymin, ymax = np.min(y), np.max(y)
-        X, Y = np.meshgrid(np.linspace(xmin, xmax, 100), np.linspace(ymin, ymax, 100))
+        X, Y = np.meshgrid(np.linspace(xmin, xmax, 101), np.linspace(ymin, ymax, 101))
         Z = griddata(nodecoords, sol, (X, Y), method='linear') # cubic, linear, nearest
         cs= plt.contourf(X, Y, Z, 100, cmap='jet', levels=200)
         fig.colorbar(cs)
