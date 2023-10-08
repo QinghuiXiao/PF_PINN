@@ -23,7 +23,7 @@ if __name__ == "__main__":
     parser.add_argument('--scheduler_gamma', type=float, default=0.9, help="gamma for learning rate scheduler")
 
     # PINN setup
-    parser.add_argument('--n_int', type=int, default=10201)
+    parser.add_argument('--n_int', type=int, default=2651)
     parser.add_argument('--n_sb', type=int, default=200)
     parser.add_argument('--n_tb', type=int, default=2651)
     parser.add_argument('--nt', type=int, default=10)

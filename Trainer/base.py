@@ -487,8 +487,8 @@ class Pinns2:
         # 从时间坐标中获取初始时间
         t_initial = torch.tensor([self.time_domain[0]])
         input_itb_time = torch.tile(t_initial[:, None], [self.n_tb, 1])
-        x_0 = torch.linspace(0, 1, 21)
-        y_0 = torch.cat([torch.linspace(0, 0.49, 10), torch.linspace(0.51, 1, 10)])
+        x_0 = torch.linspace(0, 1, 51)
+        y_0 = torch.cat([torch.linspace(0, 0.49, 25), torch.linspace(0.51, 1, 25)])
         grid_x0, grid_y0 = torch.meshgrid(x_0, y_0)
         input_itb_0 = torch.stack((grid_x0.reshape(-1), grid_y0.reshape(-1)), dim=1)
         #x_02 = torch.linspace(0.51, 1, 10)
@@ -508,8 +508,8 @@ class Pinns2:
         # 从时间坐标中获取结束时间
         t_end = torch.tensor([self.time_domain[1]])
         input_etb_time = torch.tile(t_end[:, None], [self.n_tb, 1])
-        x_0 = torch.linspace(0, 1, 21)
-        y_0 = torch.cat([torch.linspace(0, 0.49, 10), torch.linspace(0.51, 1, 10)])
+        x_0 = torch.linspace(0, 1, 51)
+        y_0 = torch.cat([torch.linspace(0, 0.49, 25), torch.linspace(0.51, 1, 25)])
         grid_x0, grid_y0 = torch.meshgrid(x_0, y_0)
         input_etb_0 = torch.stack((grid_x0.reshape(-1), grid_y0.reshape(-1)), dim=1)
 
@@ -545,8 +545,8 @@ class Pinns2:
         t = torch.linspace(self.time_domain[0], self.time_domain[1], 2)
         input_int_time = torch.tile(t[:, None], [self.n_int, 1])
         
-        x_0 = torch.linspace(0, 1, 21)
-        y_0 = torch.cat([torch.linspace(0, 0.49, 10), torch.linspace(0.51, 1, 10)])
+        x_0 = torch.linspace(0, 1, 51)
+        y_0 = torch.cat([torch.linspace(0, 0.49, 25), torch.linspace(0.51, 1, 25)])
         grid_x0, grid_y0 = torch.meshgrid(x_0, y_0)
         input_int_0 = torch.stack((grid_x0.reshape(-1), grid_y0.reshape(-1)), dim=1)
 
@@ -570,20 +570,20 @@ class Pinns2:
         training_set_itb = DataLoader(torch.utils.data.TensorDataset(input_itb),
                                      batch_size=self.n_tb, shuffle=False)
 
-        training_set_etb = DataLoader(torch.utils.data.TensorDataset(input_itb),
+        training_set_etb = DataLoader(torch.utils.data.TensorDataset(input_etb),
                                      batch_size=self.n_tb, shuffle=False)
 
         training_set_int = DataLoader(torch.utils.data.TensorDataset(input_int),
-                                      batch_size=self.n_int, shuffle=False)
+                                      batch_size=2*self.n_int, shuffle=False)
 
         return training_set_sb, training_set_itb, training_set_etb, training_set_int
 
-    def compute_ic_residual(self, input_tb):
+    def compute_ic_residual(self, input_itb):
         u1_previous = self.u_previous[:, 0].reshape(-1, 1)
         u2_previous = self.u_previous[:, 1].reshape(-1, 1)
         c_previous = self.u_previous[:, 2].reshape(-1, 1)
-        input_tb.requires_grad = True
-        u = self.approximate_solution(input_tb)
+        input_itb.requires_grad = True
+        u = self.approximate_solution(input_itb)
         u1 = u[:, 0].reshape(-1, 1)
         u2 = u[:, 1].reshape(-1, 1)
         c = u[:, 2].reshape(-1, 1)
@@ -663,13 +663,13 @@ class Pinns2:
         r_int_1, r_int_2, r_int_3, r_int_c = self.compute_pde_residual(inp_train_int)
         r_sbU_u2 = self.compute_bcU_residual(inp_train_sb[0:2*self.n_sb, :])
         r_sbB_u1, r_sbB_u2 = self.compute_bcB_residual(inp_train_sb[2*self.n_sb:, :])
-        r_tb_u1, r_tb_u2, r_tb_c, = self.compute_ic_residual(inp_train_itb)
+        r_tb_u1, r_tb_u2, r_tb_c = self.compute_ic_residual(inp_train_itb)
 
         loss_sb = torch.mean(abs(r_sbU_u2) ** 2) + torch.mean(abs(r_sbB_u2) ** 2) + torch.mean(abs(r_sbB_u1) ** 2)
         loss_tb = torch.mean(abs(r_tb_u1) ** 2) + torch.mean(abs(r_tb_u2) ** 2) + torch.mean(abs(r_tb_c) ** 2)
 
         loss_int = torch.mean(abs(r_int_1) ** 2) + torch.mean(abs(r_int_2) ** 2) + torch.mean(abs(r_int_3) ** 2)
-        loss_inequality = torch.mean(torch.relu(-r_int_c))
+        loss_inequality = torch.mean(torch.relu(r_int_c))
         loss = loss_sb + loss_tb + loss_int + loss_inequality
 
         if verbose: print("Total loss: ", round(torch.log10(loss).item(), 4),

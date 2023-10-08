@@ -1,1 +1,1 @@
-python main.py --train --trainer DPINN --n_int 521 --n_sb 50 --n_tb 521 --epochs 5000 --max_iter 5000 --optimizer adam --device 
+python main.py --train --trainer DPINN --n_int 2651 --n_sb 100 --n_tb 2651 --epochs 5000 --max_iter 5000 --optimizer adam --device 
