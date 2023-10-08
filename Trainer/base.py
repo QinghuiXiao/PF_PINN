@@ -505,18 +505,14 @@ class Pinns2:
         return input_itb
 
     def add_end_temporal_boundary_points(self):
-        # 从时间坐标中获取初始时间
+        # 从时间坐标中获取结束时间
         t_end = torch.tensor([self.time_domain[1]])
         input_etb_time = torch.tile(t_end[:, None], [self.n_tb, 1])
         x_0 = torch.linspace(0, 1, 21)
         y_0 = torch.cat([torch.linspace(0, 0.49, 10), torch.linspace(0.51, 1, 10)])
         grid_x0, grid_y0 = torch.meshgrid(x_0, y_0)
         input_etb_0 = torch.stack((grid_x0.reshape(-1), grid_y0.reshape(-1)), dim=1)
-        #x_02 = torch.linspace(0.51, 1, 10)
-        #y_02 = torch.linspace(0, 1, 21)
-        #grid_x02, grid_y02 = torch.meshgrid(x_02, y_02)
-        #input_tb_02 = torch.stack((grid_x02.reshape(-1), grid_y02.reshape(-1)), dim=1)
-        #input_tb_0 = torch.cat([input_tb_01, input_tb_02], 0)
+
         # 在空间坐标上均匀取样裂纹部分(初始裂纹部分以及裂纹产生路径部分上取点)
         x_1 = torch.linspace(0, 1, 101)
         y_1 = torch.full((101, 1), 0.5)
@@ -535,20 +531,29 @@ class Pinns2:
         input_sb_space = self.convert(self.soboleng.draw(self.n_sb))
         input_sb_space_B = torch.clone(input_sb_space)
         input_sb_space_B[:, 1] = y0
-        input_sb_space_B = torch.tile(input_sb_space_D, [2, 1])
-        input_sb_B = torch.cat((input_sb_space_D, input_sb_time), dim=1) #下边界(bottom boundary)
+        input_sb_space_B = torch.tile(input_sb_space_B, [2, 1])
+        input_sb_B = torch.cat((input_sb_space_B, input_sb_time), dim=1) #下边界(bottom boundary)
         input_sb_space_U = torch.clone(input_sb_space)
         input_sb_space_U[:, 1] = yL
         input_sb_space_U = torch.tile(input_sb_space_U, [2, 1])
         input_sb_U = torch.cat((input_sb_space_U, input_sb_time), dim=1) #上边界(upper boundary)
-        input_sb = torch.cat([input_sb_U, input_sb_D], 0)
+        input_sb = torch.cat([input_sb_U, input_sb_B], 0)
 
         return input_sb
 
     def add_interior_points(self):
         t = torch.linspace(self.time_domain[0], self.time_domain[1], 2)
-        input_int_time = torch.tile(t[:, None], [self.n_tb, 1])
-        input_int_space = self.convert(self.strueng.generate_structure_grid())
+        input_int_time = torch.tile(t[:, None], [self.n_int, 1])
+        
+        x_0 = torch.linspace(0, 1, 21)
+        y_0 = torch.cat([torch.linspace(0, 0.49, 10), torch.linspace(0.51, 1, 10)])
+        grid_x0, grid_y0 = torch.meshgrid(x_0, y_0)
+        input_int_0 = torch.stack((grid_x0.reshape(-1), grid_y0.reshape(-1)), dim=1)
+
+        x_1 = torch.linspace(0, 1, 101)
+        y_1 = torch.full((101, 1), 0.5)
+        input_int_1 = torch.cat([x_1.unsqueeze(1), y_1], dim=1)
+        input_int_space = torch.cat([input_int_0, input_int_1], 0)
         input_int_space = torch.tile(input_int_space, [2, 1])
         input_int = torch.cat((input_int_space, input_int_time), dim=1)
         return input_int

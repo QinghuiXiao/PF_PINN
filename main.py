@@ -27,8 +27,8 @@ if __name__ == "__main__":
     parser.add_argument('--n_sb', type=int, default=200)
     parser.add_argument('--n_tb', type=int, default=2651)
     parser.add_argument('--nt', type=int, default=10)
-    parser.add_argument('--nx', type=int, default=101)
-    parser.add_argument('--ny', type=int, default=101)
+    parser.add_argument('--nx', type=int, default=51)
+    parser.add_argument('--ny', type=int, default=51)
     parser.add_argument('--delta_t', type=float, default=0.1)
 
     # Network setup
